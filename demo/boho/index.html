@@ -1,0 +1,426 @@
+﻿<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loft Bohema — Boho &amp; Industrial</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #F4F1EA; --paper: #EDE8DE; --dark: #1E1C18;
+      --terra: #C27D5E; --sage: #A3B19B; --muted: #6b6456; --text: #2a261e;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Cormorant Garamond', serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    .container { max-width: 1160px; margin: 0 auto; padding: 0 1.5rem; }
+    .label { font-family: 'Space Mono', monospace; font-size: .62rem; letter-spacing: 3px; text-transform: uppercase; color: var(--terra); margin-bottom: .6rem; }
+    .h2 { font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 400; line-height: 1.1; margin-bottom: 1.25rem; font-style: italic; }
+    .btn-b { display: inline-block; padding: .9rem 2.5rem; background: var(--terra); color: #fff; text-decoration: none; font-family: 'Space Mono', monospace; font-size: .7rem; letter-spacing: 1px; text-transform: uppercase; border: none; cursor: pointer; transition: background .25s, transform .2s; border-radius: 40px; }
+    .btn-b:hover { background: #a56447; transform: translateY(-2px); }
+    .btn-outline-b { display: inline-block; padding: .9rem 2.5rem; border: 1.5px solid var(--terra); color: var(--terra); text-decoration: none; font-family: 'Space Mono', monospace; font-size: .7rem; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all .25s; background: transparent; border-radius: 40px; }
+    .btn-outline-b:hover { background: var(--terra); color: #fff; }
+
+    /* NAV */
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; transition: background .3s; }
+    .nav.scrolled { background: rgba(244,241,234,.96); box-shadow: 0 1px 0 rgba(194,125,94,.15); }
+    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-style: italic; color: var(--text); text-decoration: none; }
+    .nav-toggle { display: flex; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .nav-toggle span { display: block; width: 22px; height: 1.5px; background: var(--text); }
+    .nav-menu { position: fixed; top: 0; right: -100%; width: min(280px, 80vw); height: 100vh; background: var(--paper); padding: 5rem 2rem 2rem; box-shadow: -4px 0 20px rgba(0,0,0,.06); transition: right .3s; display: flex; flex-direction: column; gap: 1.75rem; }
+    .nav-menu.open { right: 0; }
+    .nav-menu a { font-family: 'Space Mono', monospace; font-size: .7rem; color: var(--muted); text-decoration: none; letter-spacing: 2px; text-transform: uppercase; }
+    .nav-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 999; display: none; }
+    .nav-overlay.show { display: block; }
+    @media (min-width: 768px) {
+      .nav-toggle { display: none; }
+      .nav-menu { position: static; width: auto; height: auto; background: none; padding: 0; box-shadow: none; flex-direction: row; gap: 2.25rem; }
+    }
+
+    /* ══════════════════════════════════════
+       HERO — FULL HEIGHT, TEXT BOTTOM-LEFT
+       Text is NOT centered — aligned to
+       bottom left corner (non-standard)
+    ══════════════════════════════════════ */
+    .hero {
+      min-height: 100svh; position: relative;
+      display: flex; align-items: flex-end;   /* bottom */
+      background: url('https://images.unsplash.com/photo-1519741497674-611481863552?w=1400&h=1000&fit=crop&q=80') center/cover no-repeat;
+    }
+    .hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(30,28,24,.72) 0%, transparent 65%), linear-gradient(to top, rgba(30,28,24,.85) 0%, transparent 55%); }
+    .hero-text {
+      position: relative; z-index: 1;
+      padding: 3rem 2rem 3.5rem;
+      max-width: 620px;
+    }
+    .hero-mono { font-family: 'Space Mono', monospace; font-size: .65rem; letter-spacing: 3px; text-transform: uppercase; color: var(--terra); margin-bottom: 1rem; }
+    .hero-title { font-size: clamp(3.5rem, 10vw, 7rem); font-weight: 300; font-style: italic; color: #f0ece4; line-height: .95; margin-bottom: 1.25rem; }
+    .hero-sub { font-size: 1.1rem; color: rgba(240,236,228,.6); margin-bottom: 2rem; font-style: italic; font-weight: 300; }
+    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    /* BACK */
+    .back-link { font-family: 'Space Mono', monospace; font-size: .62rem; letter-spacing: 1px; color: var(--muted); text-decoration: none; display: inline-block; padding: 3.5rem 1.5rem 0; transition: color .2s; }
+    .back-link:hover { color: var(--terra); }
+
+    /* ══════════════════════════════════════
+       ABOUT — BENTO GRID
+       2×2 grid mixing image cells + text cells
+       entirely different from standard layouts
+    ══════════════════════════════════════ */
+    .about { padding: 5rem 1.5rem; background: var(--paper); }
+    .bento {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem; margin-top: 2.5rem;
+    }
+    @media (min-width: 700px) { .bento { grid-template-columns: 1fr 1fr; grid-template-rows: 320px 320px; } }
+
+    .bento-cell { overflow: hidden; }
+    .bento-img { width: 100%; height: 100%; object-fit: cover; min-height: 260px; display: block; }
+    @media (min-width: 700px) { .bento-img { min-height: unset; } }
+
+    .bento-text {
+      background: var(--bg); padding: 2.5rem;
+      display: flex; flex-direction: column; justify-content: center;
+      min-height: 260px;
+    }
+    @media (min-width: 700px) { .bento-text { min-height: unset; } }
+    .bento-text h3 { font-size: 1.8rem; font-style: italic; font-weight: 400; margin-bottom: .75rem; }
+    .bento-text p { font-size: 1.05rem; color: var(--muted); font-weight: 300; line-height: 1.7; }
+    .bento-terra { background: var(--terra); color: #fff; }
+    .bento-terra .label { color: rgba(255,255,255,.6); }
+    .bento-terra h3 { color: #fff; }
+    .bento-terra p { color: rgba(255,255,255,.75); }
+    .bento-sage { background: var(--sage); }
+    .bento-sage .label { color: var(--dark); opacity: .6; }
+    .bento-sage h3 { color: var(--dark); }
+    .bento-sage p { color: rgba(30,28,24,.7); }
+
+    /* HORIZONTAL FEATURE STRIP */
+    /* < 700px — 2 kolumny */
+    .feats-strip { padding: 3.5rem 0; background: var(--dark); }
+    .feats-inner { display: flex; flex-wrap: wrap; gap: 0; padding: 0 1.5rem; }
+    .feat-item { flex: 0 0 50%; box-sizing: border-box; padding: 1.5rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,.07); }
+    .feat-item:nth-child(odd) { border-right: 1px solid rgba(255,255,255,.07); }
+    .feat-item:nth-last-child(-n+2) { border-bottom: none; }
+    .feat-item:last-child { border-right: none; }
+    /* 700–1199px — 3 kolumny */
+    @media (min-width: 700px) {
+      .feat-item { flex: 0 0 33.333%; padding: 1.5rem 2rem; border-right: 1px solid rgba(255,255,255,.07); border-bottom: 1px solid rgba(255,255,255,.07); }
+      .feat-item:nth-child(odd) { border-right: 1px solid rgba(255,255,255,.07); }
+      .feat-item:nth-child(3n) { border-right: none; }
+      .feat-item:nth-last-child(-n+2) { border-bottom: 1px solid rgba(255,255,255,.07); }
+      .feat-item:nth-last-child(-n+3) { border-bottom: none; }
+      .feat-item:last-child { border-right: none; }
+    }
+    /* ≥ 1200px — jeden rząd */
+    @media (min-width: 1200px) {
+      .feats-inner { flex-wrap: nowrap; }
+      .feat-item { flex: 1; padding: 1.5rem 2.5rem; border-bottom: none; border-right: 1px solid rgba(255,255,255,.07); }
+      .feat-item:nth-child(3n) { border-right: 1px solid rgba(255,255,255,.07); }
+      .feat-item:nth-last-child(-n+3) { border-bottom: none; }
+      .feat-item:last-child { border-right: none; }
+    }
+    .feat-n { font-size: 2.8rem; font-style: italic; color: var(--terra); line-height: 1; }
+    .feat-label { font-family: 'Space Mono', monospace; font-size: .6rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,.4); margin-top: .4rem; }
+    .feat-desc { font-size: 1rem; color: rgba(255,255,255,.6); margin-top: .3rem; font-weight: 300; }
+
+    /* ══════════════════════════════════════
+       GALLERY — CSS COLUMNS MASONRY
+       column-count property — items flow
+       vertically and fill columns naturally
+       completely different from grid layouts
+    ══════════════════════════════════════ */
+    .gallery { padding: 5rem 1.5rem; background: var(--bg); }
+    .gallery-intro { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem; }
+    .gallery-note { font-family: 'Space Mono', monospace; font-size: .62rem; color: var(--muted); letter-spacing: 1px; line-height: 1.6; max-width: 200px; }
+
+    .masonry {
+      column-count: 2;
+      column-gap: .75rem;
+    }
+    @media (min-width: 600px) { .masonry { column-count: 3; } }
+    @media (min-width: 900px) { .masonry { column-count: 4; } }
+
+    .g {
+      break-inside: avoid;
+      margin-bottom: .75rem;
+      cursor: pointer;
+      overflow: hidden;
+      position: relative;
+      display: block;
+    }
+    .g img { width: 100%; height: auto; display: block; transition: transform .5s, filter .4s; filter: saturate(.85); }
+    .g:hover img { transform: scale(1.05); filter: saturate(1.1); }
+    .g::after { content: ''; position: absolute; inset: 0; background: rgba(194,125,94,0); transition: background .3s; }
+    .g:hover::after { background: rgba(194,125,94,.15); }
+
+    /* LIGHTBOX */
+    .lb { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(20,18,14,.95); align-items: center; justify-content: center; }
+    .lb.active { display: flex; }
+    .lb img { max-width: 90vw; max-height: 85vh; object-fit: contain; }
+    .lb-close,.lb-prev,.lb-next { position: fixed; background: rgba(194,125,94,.15); border: 1px solid rgba(194,125,94,.3); color: var(--terra); width: 44px; height: 44px; border-radius: 50%; cursor: pointer; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+    .lb-close:hover,.lb-prev:hover,.lb-next:hover { background: rgba(194,125,94,.3); }
+    .lb-close { top: 1rem; right: 1rem; }
+    .lb-prev { left: 1rem; top: 50%; transform: translateY(-50%); }
+    .lb-next { right: 1rem; top: 50%; transform: translateY(-50%); }
+    .lb-cnt { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); color: rgba(163,177,155,.6); font-family: 'Space Mono', monospace; font-size: .7rem; letter-spacing: 2px; }
+
+    /* ══════════════════════════════════════
+       OFFER — OVERLAPPING ORGANIC CARDS
+       Cards overlap each other with
+       extreme border-radius and rotation
+    ══════════════════════════════════════ */
+    .offer { padding: 5rem 1.5rem 6rem; background: var(--paper); }
+    .offer-head { margin-bottom: 3rem; }
+    .pkg-organic { display: grid; grid-template-columns: 1fr; gap: 2rem; position: relative; }
+    @media (min-width: 768px) {
+      .pkg-organic { grid-template-columns: repeat(3,1fr); }
+      .pkg-organic .pkg-card:nth-child(2) { margin-top: 2.5rem; }
+      .pkg-organic .pkg-card:nth-child(3) { margin-top: 5rem; }
+    }
+    .pkg-card { background: var(--bg); padding: 2.5rem 2rem; border-radius: 2rem; position: relative; transition: transform .3s, box-shadow .3s; }
+    .pkg-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(194,125,94,.2); }
+    .pkg-card.featured-c { background: var(--terra); color: #fff; }
+    .pkg-card.featured-c .label { color: rgba(255,255,255,.6); }
+    .pkg-card.featured-c .pkg-price { color: #fff; }
+    .pkg-card.featured-c ul li { color: rgba(255,255,255,.75); border-bottom-color: rgba(255,255,255,.1); }
+    .pkg-card.featured-c ul li::before { color: rgba(255,255,255,.6); }
+    .pkg-name { font-size: 2rem; font-style: italic; font-weight: 400; margin-bottom: .25rem; }
+    .pkg-price { font-size: 1.5rem; font-weight: 300; color: var(--terra); margin-bottom: 1.25rem; }
+    .pkg-price span { font-size: .9rem; }
+    .pkg ul { list-style: none; margin-bottom: 1.75rem; }
+    .pkg ul li { font-size: 1rem; color: var(--muted); padding: .4rem 0; border-bottom: 1px dotted rgba(194,125,94,.25); font-weight: 300; }
+    .pkg ul li::before { content: '◦ '; color: var(--terra); }
+
+    /* CONTACT */
+    .contact { padding: 5rem 1.5rem; background: var(--dark); }
+    .contact-split { display: grid; grid-template-columns: 1fr; gap: 3rem; }
+    @media (min-width: 768px) { .contact-split { grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; } }
+    .contact-info .h2 { color: #f0ece4; }
+    .contact-info .label { color: var(--terra); }
+    .contact-info p { font-size: 1.05rem; color: rgba(240,236,228,.55); font-weight: 300; margin-bottom: 1.5rem; line-height: 1.75; }
+    .cd { display: flex; gap: .6rem; align-items: flex-start; color: rgba(240,236,228,.6); font-size: 1rem; margin-bottom: .6rem; font-weight: 300; }
+    form { display: flex; flex-direction: column; gap: .9rem; }
+    form input,form textarea,form select { width: 100%; padding: .85rem 1rem; background: rgba(255,255,255,.04); border: 1px solid rgba(163,177,155,.2); color: #f0ece4; font-family: 'Cormorant Garamond',serif; font-size: 1rem; outline: none; transition: border-color .2s; border-radius: .75rem; }
+    form input:focus,form textarea:focus,form select:focus { border-color: var(--terra); }
+    form textarea { height: 110px; resize: vertical; }
+    form select option { background: #1e1c18; }
+
+    /* FOOTER */
+    footer { background: #141210; color: rgba(240,236,228,.35); padding: 3rem 1.5rem 1.5rem; }
+    .f-grid { max-width: 1160px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 2rem; }
+    @media (min-width: 600px) { .f-grid { grid-template-columns: 2fr 1fr 1fr; } }
+    .f-brand { font-family: 'Cormorant Garamond',serif; font-size: 1.8rem; font-style: italic; color: var(--terra); margin-bottom: .5rem; }
+    .f-col h4 { font-family: 'Space Mono',monospace; font-size: .6rem; letter-spacing: 2px; text-transform: uppercase; color: var(--sage); margin-bottom: .85rem; }
+    .f-col ul { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+    .f-col a { color: rgba(240,236,228,.35); text-decoration: none; font-size: .9rem; font-weight: 300; transition: color .2s; }
+    .f-col a:hover { color: var(--terra); }
+    .f-bottom { max-width: 1160px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,.05); padding-top: 1.5rem; text-align: center; font-family: 'Space Mono',monospace; font-size: .65rem; letter-spacing: 1px; }
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a href="#" class="nav-logo">Loft Bohema</a>
+  <button class="nav-toggle" id="toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="nav-menu" id="menu">
+    <a href="#o-nas" onclick="cm()">O nas</a>
+    <a href="#galeria" onclick="cm()">Galeria</a>
+    <a href="#oferta" onclick="cm()">Oferta</a>
+    <a href="#kontakt" onclick="cm()">Kontakt</a>
+  </div>
+  <div class="nav-overlay" id="overlay" onclick="cm()"></div>
+</nav>
+
+<!-- HERO: full-height, text BOTTOM-LEFT (not centered) -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="hero-mono">Boho &amp; Industrial · Łódź</p>
+    <h1 class="hero-title">Loft<br>Bohema</h1>
+    <p class="hero-sub">Gdzie cegła spotyka wełniany koronkę</p>
+    <div class="hero-ctas">
+      <a href="#kontakt" class="btn-b">Rezerwuj</a>
+      <a href="#galeria" class="btn-outline-b">Galeria</a>
+    </div>
+  </div>
+</section>
+
+<a href="../../index.html" class="back-link">← Wszystkie style</a>
+
+<!-- ABOUT: bento 2×2 grid -->
+<section class="about" id="o-nas">
+  <div class="container">
+    <p class="label">O miejscu</p>
+    <h2 class="h2">Cztery ściany,<br>jedna historia</h2>
+    <div class="bento">
+      <!-- cell 1: image -->
+      <div class="bento-cell">
+        <img class="bento-img" src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=800&h=600&fit=crop&q=80" alt="Wnętrze loftu">
+      </div>
+      <!-- cell 2: text -->
+      <div class="bento-cell bento-text">
+        <p class="label">Historia</p>
+        <h3>Dawna fabryka, nowe życie</h3>
+        <p>Zrewitalizowany budynek z 1912 roku. Oryginalne cegły, stalowe belki i drewniana posadzka tworzą niepowtarzalny klimat loftu przemysłowego.</p>
+      </div>
+      <!-- cell 3: text (terra) -->
+      <div class="bento-cell bento-text bento-terra">
+        <p class="label">Co oferujemy</p>
+        <h3>Przestrzeń na Wasze marzenia</h3>
+        <p>600 m² otwartej przestrzeni, którą kształtujecie według własnej wizji. Wesele, gala, event — możliwości są nieograniczone.</p>
+      </div>
+      <!-- cell 4: image -->
+      <div class="bento-cell">
+        <img class="bento-img" src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=800&h=600&fit=crop&q=80" alt="Szczegóły sali">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HORIZONTAL FEATURE STRIP -->
+<div class="feats-strip">
+  <div class="feats-inner">
+    <div class="feat-item"><div class="feat-n">600</div><div class="feat-label">metrów²</div><div class="feat-desc">otwartej przestrzeni</div></div>
+    <div class="feat-item"><div class="feat-n">200</div><div class="feat-label">gości max</div><div class="feat-desc">bankiet, 300 cocktail</div></div>
+    <div class="feat-item"><div class="feat-n">1912</div><div class="feat-label">rok budowy</div><div class="feat-desc">zabytkowa fabryka</div></div>
+    <div class="feat-item"><div class="feat-n">24h</div><div class="feat-label">wynajem</div><div class="feat-desc">pełna doba dostępna</div></div>
+    <div class="feat-item"><div class="feat-n">4K</div><div class="feat-label">nagłośnienie</div><div class="feat-desc">profesjonalny system</div></div>
+    <div class="feat-item"><div class="feat-n">∞</div><div class="feat-label">możliwości</div><div class="feat-desc">pełna personalizacja</div></div>
+  </div>
+</div>
+
+<!-- GALLERY: CSS columns masonry -->
+<section class="gallery" id="galeria">
+  <div class="container">
+    <div class="gallery-intro">
+      <div>
+        <p class="label">Wnętrza &amp; plener</p>
+        <h2 class="h2">Galeria</h2>
+      </div>
+      <p class="gallery-note">Naturalne proporcje zdjęć. Kliknij, aby powiększyć.</p>
+    </div>
+    <div class="masonry">
+      <div class="g" onclick="openLb(0)"><img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?w=600&h=900&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(1)"><img src="https://images.unsplash.com/photo-1583939411023-14783179e581?w=600&h=400&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(2)"><img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=600&h=700&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(3)"><img src="https://images.unsplash.com/photo-1647296020388-787fdae78e3c?w=600&h=450&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(4)"><img src="https://images.unsplash.com/photo-1648154164366-d067faecdc51?w=600&h=800&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(5)"><img src="https://images.unsplash.com/photo-1606216794079-73f85bbd57d5?w=600&h=500&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(6)"><img src="https://images.unsplash.com/photo-1583939411023-14783179e581?w=600&h=400&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(7)"><img src="https://images.unsplash.com/photo-1732053890012-1f3ecb8cac8a?w=600&h=750&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(8)"><img src="https://images.unsplash.com/photo-1606216794079-73f85bbd57d5?w=600&h=500&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(9)"><img src="https://images.unsplash.com/photo-1513640038517-98240016bed1?w=600&h=600&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(10)"><img src="https://images.unsplash.com/photo-1583939411023-14783179e581?w=600&h=400&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(11)"><img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=600&h=700&fit=crop&q=80" loading="lazy" alt=""></div>
+    </div>
+  </div>
+</section>
+
+<div class="lb" id="lb" onclick="lbClick(event)">
+  <button class="lb-close" onclick="closeLb()">✕</button>
+  <button class="lb-prev" onclick="prev(event)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="next(event)">›</button>
+  <div class="lb-cnt" id="lb-cnt"></div>
+</div>
+
+<!-- OFFER: overlapping organic cards -->
+<section class="offer" id="oferta">
+  <div class="container">
+    <div class="offer-head">
+      <p class="label">Pakiety</p>
+      <h2 class="h2">Znajdź swój rytm</h2>
+    </div>
+    <div class="pkg-organic">
+      <div class="pkg-card">
+        <p class="label">Basic</p>
+        <div class="pkg-name">Atelier</div>
+        <div class="pkg-price">od 14 000 zł <span>/ event</span></div>
+        <ul class="pkg"><li>Do 80 gości</li><li>8 godz. wynajmu</li><li>Ochrona i obsługa</li><li>System audio/wideo</li></ul>
+        <a href="#kontakt" class="btn-b">Zapytaj</a>
+      </div>
+      <div class="pkg-card featured-c">
+        <p class="label">Bestseller</p>
+        <div class="pkg-name">Manufaktura</div>
+        <div class="pkg-price">od 27 000 zł <span>/ event</span></div>
+        <ul class="pkg"><li>Do 160 gości</li><li>Cała dob</li><li>Catering loftowy</li><li>Dekoracje boho</li><li>Koordynator</li></ul>
+        <a href="#kontakt" class="btn-outline-b" style="border-color:#fff;color:#fff">Zapytaj</a>
+      </div>
+      <div class="pkg-card">
+        <p class="label">Premium</p>
+        <div class="pkg-name">Fabryka Snów</div>
+        <div class="pkg-price">od 42 000 zł <span>/ event</span></div>
+        <ul class="pkg"><li>Do 200 gości</li><li>Weekend full</li><li>Catering premium</li><li>Foto/video team</li><li>Custom dekoracje</li></ul>
+        <a href="#kontakt" class="btn-b">Zapytaj</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="kontakt">
+  <div class="container">
+    <div class="contact-split">
+      <div class="contact-info">
+        <p class="label">Napisz do nas</p>
+        <h2 class="h2">Porozmawiajmy<br>o Waszym dniu</h2>
+        <p>Każde wesele jest inne. Daj nam znać, czego szukasz, a my zaproponujemy coś wyjątkowego.</p>
+        <div class="cd">○ ul. Piotrkowska 152, Łódź</div>
+        <div class="cd">○ +48 42 123 456 78</div>
+        <div class="cd">○ hello@loftbohema.pl</div>
+      </div>
+      <div>
+        <form onsubmit="return false;">
+          <input type="text" placeholder="Imię i nazwisko" required>
+          <input type="email" placeholder="E-mail" required>
+          <input type="date">
+          <select><option value="">Pakiet</option><option>Atelier</option><option>Manufaktura</option><option>Fabryka Snów</option></select>
+          <textarea placeholder="Opowiedz o sobie i Waszym weselu..."></textarea>
+          <button type="submit" class="btn-b">Wyślij wiadomość</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-grid">
+    <div><div class="f-brand">Loft Bohema</div><p style="font-size:.9rem;font-weight:300">Boho &amp; industrial w sercu Łodzi.</p></div>
+    <div class="f-col"><h4>Menu</h4><ul><li><a href="#o-nas">O nas</a></li><li><a href="#galeria">Galeria</a></li><li><a href="#oferta">Oferta</a></li><li><a href="#kontakt">Kontakt</a></li></ul></div>
+    <div class="f-col"><h4>Social</h4><ul><li><a href="#">Instagram</a></li><li><a href="#">Pinterest</a></li></ul></div>
+  </div>
+  <div class="f-bottom">© 2026 Loft Bohema</div>
+</footer>
+
+<script>
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60));
+  document.getElementById('toggle').addEventListener('click',()=>{document.getElementById('menu').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');});
+  function cm(){document.getElementById('menu').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+  const imgs=[
+    'https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1523438885200-e635ba2c371e?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1606800052052-a08af7148866?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1647296020388-787fdae78e3c?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1648154164366-d067faecdc51?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1606216794079-73f85bbd57d5?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1773688200380-a85294a92398?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1513640038517-98240016bed1?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1705288779658-a34e274c2296?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1648139199227-843496256ed4?w=1200&h=900&fit=crop&q=80'
+  ];
+  let cur=0;
+  const lb=document.getElementById('lb'),lbImg=document.getElementById('lb-img'),lbCnt=document.getElementById('lb-cnt');
+  function openLb(i){cur=i;lbImg.src=imgs[i];lbCnt.textContent=`${i+1} / ${imgs.length}`;lb.classList.add('active');document.body.style.overflow='hidden';}
+  function closeLb(){lb.classList.remove('active');document.body.style.overflow='';}
+  function next(e){if(e)e.stopPropagation();cur=(cur+1)%imgs.length;lbImg.src=imgs[cur];lbCnt.textContent=`${cur+1} / ${imgs.length}`;}
+  function prev(e){if(e)e.stopPropagation();cur=(cur-1+imgs.length)%imgs.length;lbImg.src=imgs[cur];lbCnt.textContent=`${cur+1} / ${imgs.length}`;}
+  function lbClick(e){if(e.target===lb)closeLb();}
+  document.addEventListener('keydown',e=>{if(!lb.classList.contains('active'))return;if(e.key==='ArrowRight')next();else if(e.key==='ArrowLeft')prev();else if(e.key==='Escape')closeLb();});
+</script>
+</body>
+</html>

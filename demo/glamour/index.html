@@ -1,0 +1,417 @@
+﻿<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pałac Splendore — Glamour &amp; Nowoczesna Elegancja</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0f0f0f; --surface: #1a1a1a; --gold: #D4AF37;
+      --gold-light: #f0d060; --rose: #E6C2C2; --text: #f0ece4; --muted: rgba(240,236,228,.5);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Lato', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    .label { font-size: .65rem; letter-spacing: 5px; text-transform: uppercase; color: var(--gold); margin-bottom: .75rem; font-weight: 400; }
+    .h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.12; margin-bottom: 1.25rem; }
+    .btn-g { display: inline-block; padding: .9rem 2.75rem; background: transparent; color: var(--gold); text-decoration: none; font-size: .72rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; border: 1px solid var(--gold); transition: all .3s; cursor: pointer; }
+    .btn-g:hover { background: var(--gold); color: #000; }
+    .btn-g-fill { display: inline-block; padding: .9rem 2.75rem; background: var(--gold); color: #000; text-decoration: none; font-size: .72rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; border: 1px solid var(--gold); transition: all .3s; cursor: pointer; }
+    .btn-g-fill:hover { background: var(--gold-light); }
+
+    /* NAV */
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1.2rem 2rem; display: flex; align-items: center; justify-content: space-between; transition: background .4s; }
+    .nav.scrolled { background: rgba(15,15,15,.97); border-bottom: 1px solid rgba(212,175,55,.12); }
+    .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold); text-decoration: none; letter-spacing: 1px; }
+    .nav-toggle { display: flex; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .nav-toggle span { display: block; width: 24px; height: 1px; background: var(--gold); }
+    .nav-menu { position: fixed; top: 0; right: -100%; width: min(300px, 85vw); height: 100vh; background: #111; padding: 5rem 2rem 2rem; border-left: 1px solid rgba(212,175,55,.15); transition: right .3s; display: flex; flex-direction: column; gap: 1.75rem; }
+    .nav-menu.open { right: 0; }
+    .nav-menu a { font-size: .75rem; font-weight: 700; color: var(--muted); text-decoration: none; letter-spacing: 3px; text-transform: uppercase; transition: color .2s; }
+    .nav-menu a:hover { color: var(--gold); }
+    .nav-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 999; display: none; }
+    .nav-overlay.show { display: block; }
+    @media (min-width: 768px) {
+      .nav-toggle { display: none; }
+      .nav-menu { position: static; width: auto; height: auto; background: none; padding: 0; border: none; flex-direction: row; gap: 2.5rem; }
+    }
+
+    /* ══════════════════════════════════════
+       LAYOUT: FULL-HEIGHT SCROLL-SNAP
+       Each major section = 100vh min
+       scroll-snap-type: y mandatory on main
+    ══════════════════════════════════════ */
+    main { scroll-snap-type: y mandatory; overflow-y: scroll; height: 100vh; }
+    .snap { scroll-snap-align: start; }
+
+    /* HERO: full-screen cinematic centered */
+    .hero {
+      min-height: 100vh; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      background: url('https://images.unsplash.com/photo-1519741497674-611481863552?w=1600&h=1000&fit=crop&q=80') center/cover no-repeat;
+    }
+    .hero::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(15,15,15,.3) 0%, rgba(15,15,15,.65) 70%, var(--bg) 100%); }
+    .hero-inner { position: relative; z-index: 1; padding: 2rem; }
+    .hero-sup { font-size: .65rem; letter-spacing: 8px; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3.5rem, 10vw, 8rem); font-weight: 700; line-height: .9; margin-bottom: 1.5rem; }
+    .hero-title em { display: block; font-style: italic; color: var(--gold); }
+    .hero-tagline { font-size: .85rem; color: var(--muted); letter-spacing: 2px; margin-bottom: 3rem; font-weight: 300; }
+    .hero-ctas { display: flex; gap: 1.25rem; justify-content: center; flex-wrap: wrap; }
+    .scroll-hint { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: .5rem; color: var(--muted); font-size: .65rem; letter-spacing: 3px; text-transform: uppercase; }
+    .scroll-hint-line { width: 1px; height: 50px; background: linear-gradient(to bottom, transparent, var(--gold)); animation: scrollLine 2s ease-in-out infinite; }
+    @keyframes scrollLine { 0%,100%{opacity:0;transform:scaleY(0.3) translateY(-20px)} 50%{opacity:1;transform:scaleY(1) translateY(0)} }
+
+    /* ══════════════════════════════════════
+       ABOUT: asymmetric — huge quote left,
+       content right (60/40 split)
+    ══════════════════════════════════════ */
+    .about {
+      min-height: 100vh; display: grid; grid-template-columns: 1fr;
+      align-items: center; padding: 5rem 1.5rem;
+      background: var(--surface);
+    }
+    @media (min-width: 900px) {
+      .about { grid-template-columns: 60fr 40fr; gap: 0; padding: 0; }
+    }
+    .about-quote-side {
+      padding: 5rem 3rem; display: flex; flex-direction: column; justify-content: center;
+      border-right: 1px solid rgba(212,175,55,.1);
+    }
+    .about-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      font-style: italic; line-height: 1.2;
+      color: var(--text); margin-bottom: 1.5rem;
+    }
+    .about-quote::before { content: '\201C'; color: var(--gold); font-size: 1.5em; line-height: 0; vertical-align: -.4em; margin-right: .15em; }
+    .about-quote::after { content: '\201D'; color: var(--gold); font-size: 1.5em; line-height: 0; vertical-align: -.4em; margin-left: .1em; }
+    .about-attr { font-size: .72rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); }
+
+    .about-content-side { padding: 4rem 3rem; display: flex; flex-direction: column; justify-content: center; }
+    .about-content-side p { color: var(--muted); font-size: .9rem; line-height: 1.85; margin-bottom: 1rem; font-weight: 300; }
+    .about-feats { margin-top: 2rem; display: flex; flex-direction: column; gap: 1.25rem; }
+    .a-feat { display: flex; gap: 1rem; align-items: flex-start; border-left: 2px solid var(--gold); padding-left: 1rem; }
+    .a-feat-label { font-size: .68rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: .25rem; }
+    .a-feat-val { font-size: .88rem; color: var(--text); font-weight: 300; }
+
+    /* ══════════════════════════════════════
+       GALLERY: asymmetric magazine grid
+       12-column base with varying spans
+    ══════════════════════════════════════ */
+    .gallery { background: var(--bg); padding: 5rem 1.5rem; }
+    .gallery-head { display: flex; align-items: baseline; gap: 2rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+    .gallery-head .h2 { margin-bottom: 0; }
+    .gallery-line { flex: 1; height: 1px; background: rgba(212,175,55,.2); min-width: 40px; }
+
+    .gal-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: .5rem; }
+    @media (min-width: 600px) { .gal-grid { grid-template-columns: repeat(3,1fr); } }
+    @media (min-width: 900px) {
+      .gal-grid {
+        grid-template-columns: repeat(12,1fr);
+        grid-auto-rows: 160px;
+      }
+      .gal-grid .g:nth-child(1)  { grid-column: span 8; grid-row: span 2; }
+      .gal-grid .g:nth-child(2)  { grid-column: span 4; grid-row: span 1; }
+      .gal-grid .g:nth-child(3)  { grid-column: span 4; grid-row: span 1; }
+      .gal-grid .g:nth-child(4)  { grid-column: span 4; grid-row: span 2; }
+      .gal-grid .g:nth-child(5)  { grid-column: span 8; grid-row: span 1; }
+      .gal-grid .g:nth-child(6)  { grid-column: span 5; grid-row: span 1; }
+      .gal-grid .g:nth-child(7)  { grid-column: span 3; grid-row: span 1; }
+      .gal-grid .g:nth-child(8)  { grid-column: span 3; grid-row: span 1; }
+      .gal-grid .g:nth-child(9)  { grid-column: span 4; grid-row: span 2; }
+      .gal-grid .g:nth-child(10) { grid-column: span 4; }
+      .gal-grid .g:nth-child(11) { grid-column: span 4; }
+      .gal-grid .g:nth-child(12) { grid-column: span 8; }
+    }
+    .g { overflow: hidden; cursor: pointer; aspect-ratio: 1; position: relative; background: #111; }
+    @media (min-width: 900px) { .g { aspect-ratio: unset; } }
+    .g img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease, filter .4s; filter: brightness(.9); }
+    .g:hover img { transform: scale(1.08); filter: brightness(1.1); }
+    .g::after { content: ''; position: absolute; inset: 0; border: 1px solid transparent; transition: border-color .3s; }
+    .g:hover::after { border-color: var(--gold); }
+
+    /* LIGHTBOX */
+    .lb { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,.96); align-items: center; justify-content: center; }
+    .lb.active { display: flex; }
+    .lb img { max-width: 90vw; max-height: 85vh; object-fit: contain; }
+    .lb-close,.lb-prev,.lb-next { position: fixed; background: rgba(212,175,55,.1); border: 1px solid rgba(212,175,55,.3); color: var(--gold); width: 44px; height: 44px; border-radius: 50%; cursor: pointer; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+    .lb-close:hover,.lb-prev:hover,.lb-next:hover { background: rgba(212,175,55,.25); }
+    .lb-close { top: 1rem; right: 1rem; }
+    .lb-prev { left: 1rem; top: 50%; transform: translateY(-50%); }
+    .lb-next { right: 1rem; top: 50%; transform: translateY(-50%); }
+    .lb-cnt { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); color: var(--gold); font-size: .72rem; letter-spacing: 3px; }
+
+    /* ══════════════════════════════════════
+       PACKAGES: full-width stacked horizontal
+       rows — each package = wide horizontal
+       band, not a vertical card
+    ══════════════════════════════════════ */
+    .offer { background: var(--surface); padding: 5rem 0; }
+    .offer-head { padding: 0 1.5rem; margin-bottom: 3rem; }
+    .offer-head .h2 { margin-bottom: 0; }
+
+    .pkg-stack { display: flex; flex-direction: column; gap: 0; }
+    .pkg-row {
+      display: grid; grid-template-columns: 1fr;
+      border-top: 1px solid rgba(212,175,55,.12);
+      padding: 2.5rem 1.5rem; gap: 1.5rem;
+      transition: background .3s;
+    }
+    @media (min-width: 768px) {
+      .pkg-row { grid-template-columns: 1fr 2fr 1fr; align-items: center; padding: 2.5rem 3rem; gap: 2rem; }
+    }
+    .pkg-row:hover { background: rgba(212,175,55,.04); }
+    .pkg-row.featured-row { background: rgba(212,175,55,.06); border-top-color: var(--gold); }
+    .pkg-left .pkg-name { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: .25rem; }
+    .pkg-left .pkg-cap { font-size: .68rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+    .pkg-middle ul { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; }
+    .pkg-middle ul li { font-size: .82rem; color: var(--muted); font-weight: 300; }
+    .pkg-middle ul li::before { content: '— '; color: var(--gold); }
+    .pkg-right { display: flex; flex-direction: column; align-items: flex-end; gap: 1rem; }
+    .pkg-price-big { text-align: right; }
+    .pkg-price-big strong { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); }
+    .pkg-price-big span { display: block; font-size: .72rem; color: var(--muted); letter-spacing: 1px; }
+
+    /* ══════════════════════════════════════
+       CONTACT: centered minimal, full-width
+    ══════════════════════════════════════ */
+    .contact {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 5rem 1.5rem;
+      background: url('https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=1400&h=900&fit=crop&q=80') center/cover no-repeat;
+      position: relative;
+    }
+    .contact::before { content: ''; position: absolute; inset: 0; background: rgba(10,8,6,.82); }
+    .contact-inner { position: relative; z-index: 1; width: 100%; max-width: 520px; }
+    .contact-inner .h2 { margin-bottom: .5rem; }
+    .contact-inner .sub { color: var(--muted); font-size: .88rem; margin-bottom: 2.5rem; font-weight: 300; }
+    .contact-details { display: flex; flex-direction: column; gap: .85rem; margin-bottom: 2.5rem; }
+    .cd { color: var(--muted); font-size: .85rem; font-weight: 300; }
+    .cd strong { color: var(--gold); font-weight: 400; letter-spacing: 1px; }
+    form { display: flex; flex-direction: column; gap: .85rem; text-align: left; }
+    form input, form textarea, form select {
+      width: 100%; padding: .9rem 1.25rem; background: rgba(255,255,255,.04);
+      border: 1px solid rgba(212,175,55,.2); color: var(--text);
+      font-family: 'Lato', sans-serif; font-size: .85rem; outline: none;
+      transition: border-color .25s;
+    }
+    form input:focus, form textarea:focus, form select:focus { border-color: var(--gold); }
+    form textarea { height: 110px; resize: vertical; }
+    form select option { background: #1a1a1a; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: .85rem; }
+    form .btn-g-fill { width: 100%; text-align: center; }
+
+    /* BACK LINK */
+    .back-link { display: inline-block; margin-bottom: 3rem; color: var(--muted); text-decoration: none; font-size: .72rem; letter-spacing: 2px; text-transform: uppercase; transition: color .2s; }
+    .back-link:hover { color: var(--gold); }
+
+    /* DIVIDER */
+    .gold-div { width: 60px; height: 1px; background: var(--gold); margin: 1.5rem auto; }
+
+    /* FOOTER */
+    footer { background: #070707; color: var(--muted); padding: 3.5rem 1.5rem 1.5rem; border-top: 1px solid rgba(212,175,55,.08); }
+    .f-grid { max-width: 1140px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 2rem; }
+    @media (min-width: 600px) { .f-grid { grid-template-columns: 2fr 1fr 1fr; } }
+    .f-brand { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: var(--gold); margin-bottom: .5rem; }
+    .f-desc { font-size: .82rem; line-height: 1.75; font-weight: 300; }
+    .f-col h4 { font-size: .63rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: .85rem; }
+    .f-col ul { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+    .f-col a { color: var(--muted); text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .f-col a:hover { color: var(--gold); }
+    .f-bottom { max-width: 1140px; margin: 0 auto; border-top: 1px solid rgba(212,175,55,.06); padding-top: 1.5rem; text-align: center; font-size: .72rem; }
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a href="#" class="nav-logo">Pałac Splendore</a>
+  <button class="nav-toggle" id="toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="nav-menu" id="menu">
+    <a href="#o-nas" onclick="cm()">O nas</a>
+    <a href="#galeria" onclick="cm()">Galeria</a>
+    <a href="#oferta" onclick="cm()">Oferta</a>
+    <a href="#kontakt" onclick="cm()">Kontakt</a>
+  </div>
+  <div class="nav-overlay" id="overlay" onclick="cm()"></div>
+</nav>
+
+<main id="main-scroll">
+
+<!-- HERO: full-screen cinematic -->
+<section class="hero snap">
+  <div class="hero-inner">
+    <p class="hero-sup">Nowoczesna elegancja</p>
+    <h1 class="hero-title">Pałac<br><em>Splendore</em></h1>
+    <p class="hero-tagline">Luksus bez kompromisów · Warszawa</p>
+    <div class="hero-ctas">
+      <a href="#kontakt" class="btn-g-fill">Zarezerwuj termin</a>
+      <a href="#o-nas" class="btn-g">Poznaj nas</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-hint-line"></div>
+  </div>
+</section>
+
+<!-- ABOUT: huge quote left / content right -->
+<section class="about snap" id="o-nas">
+  <div class="about-quote-side">
+    <a href="../../index.html" class="back-link">← Wszystkie style</a>
+    <blockquote class="about-quote">Najpiękniejszy dzień w Waszym życiu zasługuje na najpiękniejszą scenerię</blockquote>
+    <div class="about-attr">Pałac Splendore, od 2008 roku</div>
+  </div>
+  <div class="about-content-side">
+    <p class="label">O miejscu</p>
+    <h2 class="h2">Gdzie elegancja<br>spotyka marzenie</h2>
+    <p>Pałac Splendore to wyjątkowa przestrzeń łącząca secesyjną architekturę z ultranowoczesnym wyposażeniem. Nasze sale przyjęć pomieszczą do 300 gości w absolutnym luksusie.</p>
+    <p>Każdy detal — od złotych klamek po kryształowe żyrandole — jest dopracowany z obsesyjną precyzją.</p>
+    <div class="about-feats">
+      <div class="a-feat"><div><div class="a-feat-label">Pojemność</div><div class="a-feat-val">Do 300 gości w 4 salach</div></div></div>
+      <div class="a-feat"><div><div class="a-feat-label">Lokalizacja</div><div class="a-feat-val">Centrum Warszawy, 10 min od lotniska</div></div></div>
+      <div class="a-feat"><div><div class="a-feat-label">Catering</div><div class="a-feat-val">Szef kuchni z gwiazdką Michelin</div></div></div>
+      <div class="a-feat"><div><div class="a-feat-label">Noclegi</div><div class="a-feat-val">20 apartamentów premium w budynku</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY: asymmetric magazine grid -->
+<section class="gallery snap" id="galeria">
+  <div style="max-width:1600px;margin:0 auto">
+    <div class="gallery-head">
+      <p class="label" style="margin:0">Wnętrza i plener</p>
+      <h2 class="h2">Galeria</h2>
+      <div class="gallery-line"></div>
+    </div>
+    <div class="gal-grid">
+      <div class="g" onclick="openLb(0)"><img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=1200&h=800&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(1)"><img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?w=600&h=400&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(2)"><img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?w=600&h=400&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(3)"><img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&h=600&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(4)"><img src="https://images.unsplash.com/photo-1647296020388-787fdae78e3c?w=1200&h=600&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(5)"><img src="https://images.unsplash.com/photo-1648154164366-d067faecdc51?w=800&h=500&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(6)"><img src="https://images.unsplash.com/photo-1606216794079-73f85bbd57d5?w=600&h=500&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(7)"><img src="https://images.unsplash.com/photo-1606216794079-73f85bbd57d5?w=600&h=500&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(8)"><img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&h=600&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(9)"><img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?w=600&h=400&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(10)"><img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?w=600&h=400&fit=crop&q=80" loading="lazy" alt=""></div>
+      <div class="g" onclick="openLb(11)"><img src="https://images.unsplash.com/photo-1705288779658-a34e274c2296?w=1200&h=500&fit=crop&q=80" loading="lazy" alt=""></div>
+    </div>
+  </div>
+</section>
+
+<div class="lb" id="lb" onclick="lbClick(event)">
+  <button class="lb-close" onclick="closeLb()">✕</button>
+  <button class="lb-prev" onclick="prev(event)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="next(event)">›</button>
+  <div class="lb-cnt" id="lb-cnt"></div>
+</div>
+
+<!-- OFFER: full-width horizontal rows -->
+<section class="offer snap" id="oferta">
+  <div class="offer-head" style="max-width:1140px;margin:0 auto 3rem">
+    <p class="label">Pakiety weselne</p>
+    <h2 class="h2">Splendore &amp; Co.</h2>
+  </div>
+  <div class="pkg-stack" style="max-width:1140px;margin:0 auto">
+    <div class="pkg-row">
+      <div class="pkg-left"><div class="pkg-name">Silver</div><div class="pkg-cap">Ceremonia kameralna</div></div>
+      <div class="pkg-middle"><ul><li>Do 80 gości</li><li>Sala Perłowa</li><li>Catering 3-daniowy</li><li>Barman i kelnerzy</li></ul></div>
+      <div class="pkg-right"><div class="pkg-price-big"><strong>22 000 zł</strong><span>od / wydarzenie</span></div><a href="#kontakt" class="btn-g">Zapytaj</a></div>
+    </div>
+    <div class="pkg-row featured-row">
+      <div class="pkg-left"><div class="pkg-name" style="color:var(--gold)">Gold</div><div class="pkg-cap" style="color:var(--gold)">★ Bestseller ★</div></div>
+      <div class="pkg-middle"><ul><li>Do 180 gości</li><li>Sala Grande</li><li>Catering 5-daniowy</li><li>Sommelier i barman</li><li>Koordynator dnia</li><li>Dekoracje florystyczne</li></ul></div>
+      <div class="pkg-right"><div class="pkg-price-big"><strong>48 000 zł</strong><span>od / wydarzenie</span></div><a href="#kontakt" class="btn-g-fill">Zapytaj</a></div>
+    </div>
+    <div class="pkg-row">
+      <div class="pkg-left"><div class="pkg-name">Platinum</div><div class="pkg-cap">Ekskluzywne pełne wesele</div></div>
+      <div class="pkg-middle"><ul><li>Do 300 gości</li><li>Cały obiekt</li><li>Catering VIP</li><li>20 apartamentów</li><li>Limuzyna i fotograf</li><li>Niespodzianki dla pary</li></ul></div>
+      <div class="pkg-right"><div class="pkg-price-big"><strong>85 000 zł</strong><span>od / wydarzenie</span></div><a href="#kontakt" class="btn-g">Zapytaj</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT: full-screen overlay form -->
+<section class="contact snap" id="kontakt">
+  <div class="contact-inner">
+    <p class="label">Skontaktuj się</p>
+    <h2 class="h2">Rezerwuj termin</h2>
+    <div class="gold-div"></div>
+    <div class="contact-details">
+      <div class="cd"><strong>Adres:</strong> Al. Ujazdowskie 18, 00-478 Warszawa</div>
+      <div class="cd"><strong>Tel:</strong> +48 22 123 45 67</div>
+      <div class="cd"><strong>E-mail:</strong> rezerwacje@splendore.pl</div>
+    </div>
+    <form onsubmit="return false;">
+      <div class="form-row">
+        <input type="text" placeholder="Imię i nazwisko" required>
+        <input type="email" placeholder="Adres e-mail" required>
+      </div>
+      <div class="form-row">
+        <input type="tel" placeholder="Telefon">
+        <input type="date">
+      </div>
+      <select><option value="">Pakiet</option><option>Silver</option><option>Gold</option><option>Platinum</option></select>
+      <textarea placeholder="Opowiedz nam o swoim weselu..."></textarea>
+      <button type="submit" class="btn-g-fill">Wyślij zapytanie</button>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="f-grid">
+    <div><div class="f-brand">Pałac Splendore</div><p class="f-desc">Glamour &amp; nowoczesna elegancja w centrum Warszawy.</p></div>
+    <div class="f-col"><h4>Menu</h4><ul><li><a href="#o-nas">O nas</a></li><li><a href="#galeria">Galeria</a></li><li><a href="#oferta">Oferta</a></li><li><a href="#kontakt">Kontakt</a></li></ul></div>
+    <div class="f-col"><h4>Obserwuj</h4><ul><li><a href="#">Instagram</a></li><li><a href="#">Facebook</a></li><li><a href="#">Pinterest</a></li></ul></div>
+  </div>
+  <div class="f-bottom">© 2026 Pałac Splendore</div>
+</footer>
+
+<script>
+  const nav=document.getElementById('nav');
+  const mainEl=document.getElementById('main-scroll');
+  mainEl.addEventListener('scroll',()=>nav.classList.toggle('scrolled',mainEl.scrollTop>60));
+  document.getElementById('toggle').addEventListener('click',()=>{document.getElementById('menu').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');});
+  function cm(){document.getElementById('menu').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+
+  // smooth scroll into main scroller for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(a=>{
+    a.addEventListener('click',e=>{
+      const target=document.querySelector(a.getAttribute('href'));
+      if(target&&target.closest('#main-scroll')){e.preventDefault();target.scrollIntoView({behavior:'smooth'});}
+    });
+  });
+
+  const imgs=[
+    'https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1523438885200-e635ba2c371e?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1606800052052-a08af7148866?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1647296020388-787fdae78e3c?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1648154164366-d067faecdc51?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1606216794079-73f85bbd57d5?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1773688200380-a85294a92398?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1513640038517-98240016bed1?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1705288779658-a34e274c2296?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1648139199227-843496256ed4?w=1200&h=900&fit=crop&q=80'
+  ];
+  let cur=0;
+  const lb=document.getElementById('lb'),lbImg=document.getElementById('lb-img'),lbCnt=document.getElementById('lb-cnt');
+  function openLb(i){cur=i;lbImg.src=imgs[i];lbCnt.textContent=`${i+1} / ${imgs.length}`;lb.classList.add('active');document.body.style.overflow='hidden';}
+  function closeLb(){lb.classList.remove('active');document.body.style.overflow='';}
+  function next(e){if(e)e.stopPropagation();cur=(cur+1)%imgs.length;lbImg.src=imgs[cur];lbCnt.textContent=`${cur+1} / ${imgs.length}`;}
+  function prev(e){if(e)e.stopPropagation();cur=(cur-1+imgs.length)%imgs.length;lbImg.src=imgs[cur];lbCnt.textContent=`${cur+1} / ${imgs.length}`;}
+  function lbClick(e){if(e.target===lb)closeLb();}
+  document.addEventListener('keydown',e=>{if(!lb.classList.contains('active'))return;if(e.key==='ArrowRight')next();else if(e.key==='ArrowLeft')prev();else if(e.key==='Escape')closeLb();});
+</script>
+</body>
+</html>

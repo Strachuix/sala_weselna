@@ -1,0 +1,447 @@
+﻿<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRZESTRZEŃ — Modern Minimalist Wedding Venue</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --light: #F2F2F0; --dark: #1A1A1A; --mid: #888;
+      --red: #800020; --white: #FFFFFF; --border: #E0E0E0;
+    }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body { font-family: 'Inter', sans-serif; background: var(--light); color: var(--dark); overflow-x: hidden; }
+    img { display: block; max-width: 100%; }
+    .label { font-size: .62rem; letter-spacing: 5px; text-transform: uppercase; color: var(--mid); margin-bottom: .5rem; font-weight: 400; }
+    .h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 200; line-height: 1.15; margin-bottom: 1rem; letter-spacing: -1px; }
+    .btn-m { display: inline-block; padding: .85rem 2.5rem; background: var(--dark); color: var(--white); text-decoration: none; font-size: .72rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; border: 1px solid var(--dark); transition: all .25s; cursor: pointer; }
+    .btn-m:hover { background: transparent; color: var(--dark); }
+    .btn-red { display: inline-block; padding: .85rem 2.5rem; background: var(--red); color: var(--white); text-decoration: none; font-size: .72rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; border: 1px solid var(--red); transition: all .25s; cursor: pointer; }
+    .btn-red:hover { background: transparent; color: var(--red); }
+
+    /* NAV */
+    .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; transition: background .3s, border-bottom .3s; }
+    .nav.scrolled { background: rgba(242,242,240,.97); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-size: .78rem; font-weight: 700; letter-spacing: 6px; text-transform: uppercase; color: var(--dark); text-decoration: none; }
+    .nav-toggle { display: flex; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .nav-toggle span { display: block; width: 22px; height: 1px; background: var(--dark); }
+    .nav-menu { position: fixed; top: 0; right: -100%; width: min(280px, 80vw); height: 100vh; background: var(--white); padding: 5rem 2rem 2rem; border-left: 1px solid var(--border); transition: right .3s; display: flex; flex-direction: column; gap: 1.5rem; }
+    .nav-menu.open { right: 0; }
+    .nav-menu a { font-size: .72rem; font-weight: 500; color: var(--mid); text-decoration: none; letter-spacing: 3px; text-transform: uppercase; transition: color .2s; }
+    .nav-menu a:hover { color: var(--dark); }
+    .nav-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.3); z-index: 999; display: none; }
+    .nav-overlay.show { display: block; }
+    @media (min-width: 768px) {
+      .nav-toggle { display: none; }
+      .nav-menu { position: static; width: auto; height: auto; background: none; padding: 0; border: none; flex-direction: row; gap: 2.5rem; }
+    }
+
+    /* ══════════════════════════════════════
+       HERO — SPLIT BACKGROUND, NO PHOTO
+       Left half = light grey, right = dark
+       Giant text "PRZESTRZEŃ" spans BOTH
+       halves — pure typography hero
+    ══════════════════════════════════════ */
+    .hero { min-height: 100svh; position: relative; display: flex; flex-direction: column; }
+
+    /* Split background: gradient trick */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to right, var(--light) 50%, var(--dark) 50%);
+    }
+    /* On mobile, stack vertically */
+    @media (max-width: 767px) {
+      .hero::before { background: var(--dark); }
+    }
+
+    .hero-inner { position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: center; min-height: 100svh; padding: 5rem 2rem 3rem; }
+    @media (min-width: 768px) { .hero-inner { padding: 5rem 3rem 3rem; } }
+
+    .hero-big {
+      font-size: clamp(2.5rem, 13vw, 14rem);
+      font-weight: 900; line-height: .85;
+      letter-spacing: -5px;
+      /* text spans the split: left letters dark on light, right letters light on dark */
+      color: var(--dark);
+      /* On desktop we need different color per half — use background-clip trick */
+    }
+    @media (min-width: 768px) {
+      .hero-big {
+        background: linear-gradient(to right, var(--dark) 50%, var(--white) 50%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        letter-spacing: -8px;
+      }
+    }
+    @media (max-width: 767px) { .hero { overflow: hidden; } .hero-big { color: var(--white); letter-spacing: -2px; } }
+
+    .hero-bottom { display: flex; flex-direction: column; gap: 2rem; margin-top: 3rem; }
+    @media (min-width: 768px) { .hero-bottom { flex-direction: row; align-items: flex-end; justify-content: space-between; } }
+
+    .hero-left p { font-size: .75rem; font-weight: 300; color: var(--mid); letter-spacing: 2px; max-width: 300px; line-height: 1.8; }
+    @media (min-width: 768px) { .hero-left p { color: var(--mid); } }
+
+    .hero-right { display: flex; flex-direction: column; align-items: flex-start; gap: 1rem; }
+    @media (min-width: 768px) { .hero-right { align-items: flex-end; } }
+    .hero-right .btn-m { background: var(--white); color: var(--dark); border-color: var(--white); }
+    .hero-right .btn-m:hover { background: transparent; color: var(--white); }
+    @media (max-width: 767px) { .hero-right .btn-m { background: var(--white); color: var(--dark); } }
+
+    /* BACK */
+    .back-link { font-size: .62rem; letter-spacing: 2px; text-transform: uppercase; color: var(--mid); text-decoration: none; display: inline-block; padding: 2.5rem 1.5rem 0; transition: color .2s; }
+    .back-link:hover { color: var(--dark); }
+
+    /* ══════════════════════════════════════
+       ABOUT — NUMBERED SECTIONS
+       Each subsection has a large number
+       as visual anchor — strict grid layout
+    ══════════════════════════════════════ */
+    .about { background: var(--white); }
+    .about-row { display: grid; grid-template-columns: 1fr; border-bottom: 1px solid var(--border); }
+    @media (min-width: 768px) { .about-row { grid-template-columns: 80px 1fr 1fr; } }
+    @media (min-width: 900px) { .about-row { grid-template-columns: 120px 1fr 1fr; } }
+    .about-row.reverse { }
+    @media (min-width: 768px) { .about-row.reverse { grid-template-columns: 80px 1fr 1fr; } }
+
+    .about-num { padding: 2.5rem 1.5rem; font-size: clamp(4rem, 8vw, 6rem); font-weight: 100; color: var(--border); line-height: 1; border-right: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: center; }
+    .about-text { padding: 2.5rem; border-right: 1px solid var(--border); }
+    .about-text .h2 { margin-bottom: .5rem; }
+    .about-text p { font-size: .88rem; color: var(--mid); line-height: 1.8; font-weight: 300; }
+    .about-feats-col { padding: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem; justify-content: center; }
+    .af { display: flex; gap: 1rem; align-items: flex-start; border-bottom: 1px solid var(--border); padding-bottom: 1.25rem; }
+    .af:last-child { border-bottom: none; padding-bottom: 0; }
+    .af-num { font-size: 1.5rem; font-weight: 100; color: var(--red); min-width: 2.5rem; }
+    .af-label { font-size: .65rem; letter-spacing: 3px; text-transform: uppercase; color: var(--mid); margin-bottom: .2rem; }
+    .af-val { font-size: .9rem; font-weight: 300; color: var(--dark); }
+
+    /* PHOTO DIVIDER */
+    .photo-div { height: 50vw; max-height: 500px; overflow: hidden; }
+    .photo-div img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* ══════════════════════════════════════
+       GALLERY — HORIZONTAL FILM STRIP
+       display: flex; overflow-x: auto
+       scroll-snap-type: x mandatory
+       portrait format, continuous scroll
+    ══════════════════════════════════════ */
+    .gallery { padding: 4rem 0; background: var(--light); }
+    .gallery-head { padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+    .gallery-head .h2 { margin-bottom: 0; }
+    .scroll-hint-x { font-size: .62rem; letter-spacing: 2px; text-transform: uppercase; color: var(--mid); }
+
+    .film-strip {
+      display: flex;
+      gap: .5rem;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 1.5rem 1.5rem;
+      /* hide scrollbar on webkit */
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
+    }
+    .film-strip::-webkit-scrollbar { height: 4px; }
+    .film-strip::-webkit-scrollbar-track { background: transparent; }
+    .film-strip::-webkit-scrollbar-thumb { background: var(--border); }
+
+    .g {
+      flex: 0 0 220px; height: 330px;
+      scroll-snap-align: start;
+      overflow: hidden; cursor: pointer;
+      position: relative; background: #ddd;
+    }
+    @media (min-width: 600px) { .g { flex: 0 0 280px; height: 420px; } }
+    @media (min-width: 900px) { .g { flex: 0 0 320px; height: 480px; } }
+    .g img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+    .g:hover img { transform: scale(1.06); }
+    .g-idx { position: absolute; bottom: .75rem; left: .75rem; font-size: .62rem; letter-spacing: 2px; color: rgba(255,255,255,.5); font-weight: 300; }
+
+    /* LIGHTBOX */
+    .lb { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,.96); align-items: center; justify-content: center; }
+    .lb.active { display: flex; }
+    .lb img { max-width: 90vw; max-height: 85vh; object-fit: contain; }
+    .lb-close,.lb-prev,.lb-next { position: fixed; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); color: #fff; width: 44px; height: 44px; border-radius: 0; cursor: pointer; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+    .lb-close:hover,.lb-prev:hover,.lb-next:hover { background: rgba(255,255,255,.15); }
+    .lb-close { top: 1rem; right: 1rem; }
+    .lb-prev { left: 1rem; top: 50%; transform: translateY(-50%); }
+    .lb-next { right: 1rem; top: 50%; transform: translateY(-50%); }
+    .lb-cnt { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,.4); font-size: .7rem; letter-spacing: 3px; }
+
+    /* ══════════════════════════════════════
+       PACKAGES — VERTICAL COMPARISON TABLE
+       Three packages as table columns
+       Row-by-row feature comparison
+    ══════════════════════════════════════ */
+    .offer { background: var(--white); padding: 5rem 1.5rem; }
+    .offer-head { margin-bottom: 3rem; }
+    .comparison { width: 100%; border-collapse: collapse; font-size: .84rem; }
+    .comparison th { padding: 1.5rem 1.25rem; text-align: left; font-weight: 200; font-size: clamp(1.1rem, 2vw, 1.5rem); border-bottom: 2px solid var(--dark); letter-spacing: -0.5px; }
+    .comparison th:first-child { font-size: .65rem; letter-spacing: 3px; text-transform: uppercase; color: var(--mid); font-weight: 400; width: 35%; }
+    .comparison th.highlighted { border-bottom-color: var(--red); color: var(--red); }
+    .comparison td { padding: 1rem 1.25rem; border-bottom: 1px solid var(--border); font-weight: 300; color: var(--mid); vertical-align: middle; }
+    .comparison td:first-child { font-size: .72rem; letter-spacing: 1px; text-transform: uppercase; color: var(--dark); font-weight: 500; }
+    .comparison td.highlighted { color: var(--dark); font-weight: 400; }
+    .comparison .price-row td { font-size: 1.1rem; font-weight: 200; padding-top: 1.5rem; color: var(--dark); letter-spacing: -0.5px; }
+    .comparison .price-row td.highlighted { color: var(--red); }
+    .comparison .cta-row td { padding-top: 1.75rem; padding-bottom: 1.75rem; border-bottom: none; }
+    .check { color: var(--dark); font-size: 1rem; }
+    .cross { color: var(--border); font-size: 1rem; }
+
+    /* On mobile, collapse table to simple cards */
+    @media (max-width: 650px) {
+      .comparison { display: none; }
+      .pkg-mobile { display: flex; flex-direction: column; gap: 1.5rem; }
+      .pkg-m { border: 1px solid var(--border); padding: 2rem; }
+      .pkg-m.featured-m { border-color: var(--red); }
+      .pkg-m-name { font-size: 1.5rem; font-weight: 200; margin-bottom: .25rem; letter-spacing: -1px; }
+      .pkg-m-price { font-size: 1.1rem; font-weight: 200; color: var(--red); margin-bottom: 1rem; }
+      .pkg-m ul { list-style: none; margin-bottom: 1.5rem; }
+      .pkg-m ul li { font-size: .82rem; color: var(--mid); padding: .35rem 0; border-bottom: 1px solid var(--border); font-weight: 300; }
+      .pkg-m ul li::before { content: '— '; color: var(--dark); }
+    }
+    @media (min-width: 651px) { .pkg-mobile { display: none; } }
+
+    /* CONTACT */
+    .contact { background: var(--light); padding: 5rem 1.5rem; }
+    .contact-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; max-width: 900px; margin: 0 auto; }
+    @media (min-width: 768px) { .contact-grid { grid-template-columns: 1fr 1fr; } }
+    .contact-info .h2 { margin-bottom: .5rem; }
+    .contact-info p { font-size: .85rem; color: var(--mid); font-weight: 300; line-height: 1.8; margin-bottom: 1.5rem; }
+    .cd { display: flex; gap: .5rem; font-size: .83rem; color: var(--mid); margin-bottom: .5rem; font-weight: 300; }
+    form { display: flex; flex-direction: column; gap: .85rem; }
+    form input,form textarea,form select { width: 100%; padding: .85rem 1rem; border: none; border-bottom: 1px solid var(--border); background: transparent; font-family: 'Inter',sans-serif; font-size: .85rem; color: var(--dark); outline: none; transition: border-color .2s; }
+    form input:focus,form textarea:focus,form select:focus { border-bottom-color: var(--dark); }
+    form textarea { height: 100px; resize: none; }
+    form select option { background: var(--light); }
+    form .btn-m { width: 100%; text-align: center; margin-top: .5rem; }
+
+    /* FOOTER */
+    footer { background: var(--dark); color: rgba(255,255,255,.35); padding: 3.5rem 1.5rem 1.5rem; }
+    .f-grid { max-width: 1160px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 2.5rem; }
+    @media (min-width: 600px) { .f-grid { grid-template-columns: 2fr 1fr 1fr; } }
+    .f-brand { font-size: .78rem; font-weight: 700; letter-spacing: 6px; text-transform: uppercase; color: var(--white); margin-bottom: .5rem; }
+    .f-col h4 { font-size: .6rem; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,.5); margin-bottom: .85rem; }
+    .f-col ul { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+    .f-col a { color: rgba(255,255,255,.35); text-decoration: none; font-size: .78rem; font-weight: 300; transition: color .2s; }
+    .f-col a:hover { color: var(--white); }
+    .f-bottom { max-width: 1160px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,.07); padding-top: 1.5rem; text-align: center; font-size: .65rem; letter-spacing: 2px; }
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a href="#" class="nav-logo">Przestrzeń</a>
+  <button class="nav-toggle" id="toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div class="nav-menu" id="menu">
+    <a href="#o-nas" onclick="cm()">O nas</a>
+    <a href="#galeria" onclick="cm()">Galeria</a>
+    <a href="#oferta" onclick="cm()">Oferta</a>
+    <a href="#kontakt" onclick="cm()">Kontakt</a>
+  </div>
+  <div class="nav-overlay" id="overlay" onclick="cm()"></div>
+</nav>
+
+<!-- HERO: split background, pure typography (no photo) -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-big" aria-label="PRZESTRZEŃ">PRZESTRZEŃ</div>
+    <div class="hero-bottom">
+      <div class="hero-left">
+        <p class="label">Nowoczesna sala weselna · Wrocław</p>
+        <p>Czyste linie. Nieograniczone możliwości.<br>Twoja wizja w centrum uwagi.</p>
+      </div>
+      <div class="hero-right">
+        <a href="#kontakt" class="btn-m">Sprawdź dostępność</a>
+        <a href="#galeria" class="btn-red">Galeria</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<a href="../../index.html" class="back-link">← Wszystkie style</a>
+
+<!-- ABOUT: numbered sections grid -->
+<section class="about" id="o-nas">
+  <div class="about-row">
+    <div class="about-num">01</div>
+    <div class="about-text">
+      <p class="label">Filozofia</p>
+      <h2 class="h2">Mniej znaczy więcej</h2>
+      <p>Przestrzeń to sala weselna, która nie narzuca stylu — ona go umożliwia. Białe ściany, beton, drewno i naturalne światło tworzą płótno dla Twojej historii.</p>
+    </div>
+    <div class="about-feats-col">
+      <div class="af"><span class="af-num">01</span><div><div class="af-label">Powierzchnia</div><div class="af-val">800 m² głównej sali</div></div></div>
+      <div class="af"><span class="af-num">02</span><div><div class="af-label">Pojemność</div><div class="af-val">Do 220 gości</div></div></div>
+    </div>
+  </div>
+  <div class="about-row reverse">
+    <div class="about-num">02</div>
+    <div class="about-text">
+      <p class="label">Technologia</p>
+      <h2 class="h2">Pełna kontrola środowiska</h2>
+      <p>Inteligentne oświetlenie RGBW, profesjonalny system audio, ekrany LED — każdy element jest sterowany z jednego panelu.</p>
+    </div>
+    <div class="about-feats-col">
+      <div class="af"><span class="af-num">03</span><div><div class="af-label">Lokalizacja</div><div class="af-val">Centrum Wrocławia</div></div></div>
+      <div class="af"><span class="af-num">04</span><div><div class="af-label">Parking</div><div class="af-val">150 miejsc, bezpłatny</div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="photo-div">
+  <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=1600&h=600&fit=crop&q=80" alt="Wnętrze">
+</div>
+
+<!-- GALLERY: horizontal film strip -->
+<section class="gallery" id="galeria">
+  <div class="gallery-head">
+    <div><p class="label">Wnętrza i szczegóły</p><h2 class="h2">Galeria</h2></div>
+    <p class="scroll-hint-x">← przewijaj →</p>
+  </div>
+  <div class="film-strip" id="strip">
+    <div class="g" onclick="openLb(0)"><img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=600&h=900&fit=crop&q=80" loading="lazy" alt=""><div class="g-idx">01</div></div>
+    <div class="g" onclick="openLb(1)"><img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=600&h=900&fit=crop&q=80" loading="lazy" alt=""><div class="g-idx">02</div></div>
+    <div class="g" onclick="openLb(2)"><img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=600&h=900&fit=crop&q=80" loading="lazy" alt=""><div class="g-idx">03</div></div>
+    <div class="g" onclick="openLb(3)"><img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=600&h=900&fit=crop&q=80" loading="lazy" alt=""><div class="g-idx">04</div></div>
+    <div class="g" onclick="openLb(4)"><img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=600&h=900&fit=crop&q=80" loading="lazy" alt=""><div class="g-idx">05</div></div>
+    <div class="g" onclick="openLb(5)"><img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=600&h=900&fit=crop&q=80" loading="lazy" alt=""><div class="g-idx">06</div></div>
+    <div class="g" onclick="openLb(6)"><img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=600&h=900&fit=crop&q=80" loading="lazy" alt=""><div class="g-idx">07</div></div>
+    <div class="g" onclick="openLb(7)"><img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=600&h=900&fit=crop&q=80" loading="lazy" alt=""><div class="g-idx">08</div></div>
+    <div class="g" onclick="openLb(8)"><img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=600&h=900&fit=crop&q=80" loading="lazy" alt=""><div class="g-idx">09</div></div>
+    <div class="g" onclick="openLb(9)"><img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=600&h=900&fit=crop&q=80" loading="lazy" alt=""><div class="g-idx">10</div></div>
+    <div class="g" onclick="openLb(10)"><img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=600&h=900&fit=crop&q=80" loading="lazy" alt=""><div class="g-idx">11</div></div>
+    <div class="g" onclick="openLb(11)"><img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=600&h=900&fit=crop&q=80" loading="lazy" alt=""><div class="g-idx">12</div></div>
+  </div>
+</section>
+
+<div class="lb" id="lb" onclick="lbClick(event)">
+  <button class="lb-close" onclick="closeLb()">✕</button>
+  <button class="lb-prev" onclick="prev(event)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="next(event)">›</button>
+  <div class="lb-cnt" id="lb-cnt"></div>
+</div>
+
+<!-- OFFER: comparison table -->
+<section class="offer" id="oferta">
+  <div class="offer-head">
+    <p class="label">Pakiety weselne</p>
+    <h2 class="h2">Porównaj oferty</h2>
+  </div>
+
+  <!-- Desktop table -->
+  <table class="comparison">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Essentials</th>
+        <th class="highlighted">Studio</th>
+        <th>Lux</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Liczba gości</td><td>do 80</td><td class="highlighted">do 150</td><td>do 220</td></tr>
+      <tr><td>Czas wynajmu</td><td>8 godz.</td><td class="highlighted">16 godz.</td><td>48 godz.</td></tr>
+      <tr><td>System audio</td><td class="check">✓</td><td class="highlighted check">✓</td><td class="check">✓</td></tr>
+      <tr><td>Oświetlenie LED</td><td class="cross">–</td><td class="highlighted check">✓</td><td class="check">✓</td></tr>
+      <tr><td>Koordynator wesela</td><td class="cross">–</td><td class="highlighted check">✓</td><td class="check">✓</td></tr>
+      <tr><td>Catering</td><td class="cross">–</td><td class="cross highlighted">–</td><td class="check">✓</td></tr>
+      <tr><td>Noclegi dla pary</td><td class="cross">–</td><td class="highlighted check">✓</td><td class="check">✓</td></tr>
+      <tr class="price-row"><td>Cena od</td><td>12 000 zł</td><td class="highlighted">26 000 zł</td><td>50 000 zł</td></tr>
+      <tr class="cta-row">
+        <td></td>
+        <td><a href="#kontakt" class="btn-m">Zapytaj</a></td>
+        <td><a href="#kontakt" class="btn-red">Zapytaj</a></td>
+        <td><a href="#kontakt" class="btn-m">Zapytaj</a></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Mobile cards -->
+  <div class="pkg-mobile">
+    <div class="pkg-m">
+      <div class="pkg-m-name">Essentials</div>
+      <div class="pkg-m-price">od 12 000 zł</div>
+      <ul><li>Do 80 gości</li><li>8 godzin</li><li>System audio</li></ul>
+      <a href="#kontakt" class="btn-m">Zapytaj</a>
+    </div>
+    <div class="pkg-m featured-m">
+      <div class="pkg-m-name" style="color:var(--red)">Studio</div>
+      <div class="pkg-m-price">od 26 000 zł</div>
+      <ul><li>Do 150 gości</li><li>16 godzin</li><li>LED + koordynator</li><li>Noclegi dla pary</li></ul>
+      <a href="#kontakt" class="btn-red">Zapytaj</a>
+    </div>
+    <div class="pkg-m">
+      <div class="pkg-m-name">Lux</div>
+      <div class="pkg-m-price">od 50 000 zł</div>
+      <ul><li>Do 220 gości</li><li>48 godzin</li><li>Catering VIP</li><li>Pełen serwis</li></ul>
+      <a href="#kontakt" class="btn-m">Zapytaj</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="kontakt">
+  <div class="contact-grid">
+    <div class="contact-info">
+      <p class="label">Kontakt</p>
+      <h2 class="h2">Porozmawiajmy</h2>
+      <p>Zadaj pytanie, sprawdź dostępność lub umów się na wizytę. Odpiszemy w ciągu 24 godzin.</p>
+      <div class="cd">— ul. Świdnicka 52, 50-067 Wrocław</div>
+      <div class="cd">— +48 71 123 45 67</div>
+      <div class="cd">— hello@przestrzen.events</div>
+    </div>
+    <form onsubmit="return false;">
+      <input type="text" placeholder="Imię i nazwisko" required>
+      <input type="email" placeholder="E-mail" required>
+      <input type="date">
+      <select><option value="">Pakiet</option><option>Essentials</option><option>Studio</option><option>Lux</option></select>
+      <textarea placeholder="Opisz swój pomysł na wesele..."></textarea>
+      <button type="submit" class="btn-m">Wyślij</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="f-grid">
+    <div><div class="f-brand">Przestrzeń</div><p style="font-size:.78rem;font-weight:200">Nowoczesna sala weselna we Wrocławiu.</p></div>
+    <div class="f-col"><h4>Menu</h4><ul><li><a href="#o-nas">O nas</a></li><li><a href="#galeria">Galeria</a></li><li><a href="#oferta">Oferta</a></li><li><a href="#kontakt">Kontakt</a></li></ul></div>
+    <div class="f-col"><h4>Social</h4><ul><li><a href="#">Instagram</a></li><li><a href="#">Pinterest</a></li></ul></div>
+  </div>
+  <div class="f-bottom">© 2026 PRZESTRZEŃ</div>
+</footer>
+
+<script>
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>60));
+  document.getElementById('toggle').addEventListener('click',()=>{document.getElementById('menu').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');});
+  function cm(){document.getElementById('menu').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+  const imgs=[
+    'https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1523438885200-e635ba2c371e?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1606800052052-a08af7148866?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1647296020388-787fdae78e3c?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1648154164366-d067faecdc51?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1606216794079-73f85bbd57d5?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1773688200380-a85294a92398?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1513640038517-98240016bed1?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1705288779658-a34e274c2296?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=1200&h=900&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1648139199227-843496256ed4?w=1200&h=900&fit=crop&q=80'
+  ];
+  let cur=0;
+  const lb=document.getElementById('lb'),lbImg=document.getElementById('lb-img'),lbCnt=document.getElementById('lb-cnt');
+  function openLb(i){cur=i;lbImg.src=imgs[i];lbCnt.textContent=`${i+1} / ${imgs.length}`;lb.classList.add('active');document.body.style.overflow='hidden';}
+  function closeLb(){lb.classList.remove('active');document.body.style.overflow='';}
+  function next(e){if(e)e.stopPropagation();cur=(cur+1)%imgs.length;lbImg.src=imgs[cur];lbCnt.textContent=`${cur+1} / ${imgs.length}`;}
+  function prev(e){if(e)e.stopPropagation();cur=(cur-1+imgs.length)%imgs.length;lbImg.src=imgs[cur];lbCnt.textContent=`${cur+1} / ${imgs.length}`;}
+  function lbClick(e){if(e.target===lb)closeLb();}
+  document.addEventListener('keydown',e=>{if(!lb.classList.contains('active'))return;if(e.key==='ArrowRight')next();else if(e.key==='ArrowLeft')prev();else if(e.key==='Escape')closeLb();});
+</script>
+</body>
+</html>

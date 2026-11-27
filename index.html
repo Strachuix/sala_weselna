@@ -83,7 +83,7 @@
       .styles-grid { grid-template-columns: repeat(3, 1fr); }
     }
     @media (min-width: 1200px) {
-      .styles-grid { grid-template-columns: repeat(5, 1fr); }
+      .styles-grid { grid-template-columns: repeat(4, 1fr); }
     }
 
     /* ─── CARD ─── */
@@ -195,6 +195,58 @@
     .preview-classic .mock-dot2 { background: #002366; }
     .preview-classic .mock-dot3 { background: #C5A059; }
     .preview-classic .mock-dot4 { background: #4A0404; }
+
+    /* New directions */
+    .preview-editorial { background: linear-gradient(145deg, #f7f4ed 0 55%, #c6b59e 55%); }
+    .preview-editorial::before { content: ''; position: absolute; inset: 18px 22px 18px 48%; background: linear-gradient(160deg, #d6c6b3, #807665); }
+    .preview-editorial .mock-nav { background: rgba(247,244,237,.94); }
+    .preview-editorial .mock-h { color: #39352f; font-family: 'Playfair Display',serif; font-style: italic; }
+    .preview-editorial .mock-btn { background: #a58a69; }
+    .preview-editorial .mock-dot1 { background: #f7f4ed; border: 2px solid #ccc; }
+    .preview-editorial .mock-dot2 { background: #a58a69; }
+    .preview-editorial .mock-dot3 { background: #d6c6b3; }
+    .preview-editorial .mock-dot4 { background: #39352f; }
+
+    .preview-slow { background: linear-gradient(145deg, #f5f0e5, #9b9d7e 58%, #765b43); }
+    .preview-slow .mock-nav { background: rgba(245,240,229,.92); }
+    .preview-slow .mock-h { color: #4a4134; font-family: 'Playfair Display',serif; font-style: italic; }
+    .preview-slow .mock-btn { background: #788369; }
+    .preview-slow .mock-dot1 { background: #f5f0e5; border: 2px solid #ccc; }
+    .preview-slow .mock-dot2 { background: #788369; }
+    .preview-slow .mock-dot3 { background: #a9674d; }
+    .preview-slow .mock-dot4 { background: #765b43; }
+
+    .preview-nocturne { background: #111412; }
+    .preview-nocturne::before { content: ''; position: absolute; inset: 12px; border: 1px solid rgba(200,168,109,.55); }
+    .preview-nocturne .mock-nav { background: rgba(17,20,18,.85); border-bottom: 1px solid rgba(200,168,109,.3); }
+    .preview-nocturne .mock-h { color: #c8a86d; font-family: 'Playfair Display',serif; }
+    .preview-nocturne .mock-sub { color: rgba(255,255,255,.55) !important; }
+    .preview-nocturne .mock-btn { background: #c8a86d; color: #111412; }
+    .preview-nocturne .mock-dot1 { background: #111412; }
+    .preview-nocturne .mock-dot2 { background: #c8a86d; }
+    .preview-nocturne .mock-dot3 { background: #5b2635; }
+    .preview-nocturne .mock-dot4 { background: #f2eadc; }
+
+    .preview-atelier { background: linear-gradient(90deg, #f4f4f2 0 52%, #8d9291 52%); }
+    .preview-atelier::after { content: ''; position: absolute; right: 0; top: 0; width: 43%; height: 100%; background: linear-gradient(145deg, #777d7d, #343938); }
+    .preview-atelier .mock-nav { background: rgba(244,244,242,.96); z-index: 2; }
+    .preview-atelier .mock-h { color: #212322; font-family: 'Inter',sans-serif; font-size: .82rem; letter-spacing: 1px; z-index: 2; }
+    .preview-atelier .mock-sub { z-index: 2; }
+    .preview-atelier .mock-btn { background: #ae4c36; z-index: 2; }
+    .preview-atelier .mock-dot1 { background: #f4f4f2; border: 2px solid #ccc; }
+    .preview-atelier .mock-dot2 { background: #212322; }
+    .preview-atelier .mock-dot3 { background: #ae4c36; }
+    .preview-atelier .mock-dot4 { background: #858b89; }
+
+    .preview-garden { background: linear-gradient(150deg, #fffaf7, #eccfd2 55%, #b8c5b2); }
+    .preview-garden::before { content: ''; position: absolute; inset: 18px 40px 0; border-radius: 50% 50% 0 0; background: linear-gradient(145deg, #e9c9c4, #a9b69f); }
+    .preview-garden .mock-nav { background: rgba(255,250,247,.92); }
+    .preview-garden .mock-h { color: #51454a; font-family: 'Playfair Display',serif; font-style: italic; }
+    .preview-garden .mock-btn { background: #bd8794; }
+    .preview-garden .mock-dot1 { background: #fffaf7; border: 2px solid #ccc; }
+    .preview-garden .mock-dot2 { background: #bd8794; }
+    .preview-garden .mock-dot3 { background: #a9b69f; }
+    .preview-garden .mock-dot4 { background: #c7b9d7; }
 
     /* Mock UI inside preview */
     .mock-ui {
@@ -346,8 +398,8 @@
 
 <header>
   <p class="eyebrow">Sala Weselna — Projekty Demo</p>
-  <h1>Pięć Stylów.<br>Jeden Wyjątkowy Dzień.</h1>
-  <p>Kolekcja pięciu kompletnych projektów stron internetowych dla sal weselnych — każdy z unikalną estetyką, galerią zdjęć i formularzem kontaktowym.</p>
+  <h1>Dziesięć Stylów.<br>Jeden Wyjątkowy Dzień.</h1>
+  <p>Kolekcja dziesięciu projektów stron dla sal weselnych — od rustykalnych opowieści po dopracowane, nowoczesne doświadczenia rezerwacji.</p>
 </header>
 
 <main>
@@ -495,6 +547,91 @@
           <div class="dot" style="background:#C5A059"></div>
           <div class="dot" style="background:#4A0404"></div>
         </div>
+        <span class="card-link">Podgląd →</span>
+      </div>
+    </a>
+
+    <!-- 6 Editorial -->
+    <a class="card" href="demo/editorial/index.html">
+      <div class="preview preview-editorial">
+        <div class="mock-ui">
+          <div class="mock-nav"><div class="mock-logo"></div><div class="mock-nav-dots"><span></span><span></span><span></span></div></div>
+          <div class="mock-body"><div class="mock-h">Dwór<br>Wiśniowy</div><div class="mock-sub">Fine Art Editorial</div><div class="mock-btn">Zarezerwuj termin</div></div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-number">Styl 06</div>
+        <div class="card-title">Editorial / Fine Art</div>
+        <p class="card-desc">Magazynowa elegancja, asymetria i dużo oddechu. Ponadczasowy projekt dla pałaców i rezydencji.</p>
+        <div class="card-palette"><div class="dot" style="background:#f4f1eb"></div><div class="dot" style="background:#ab9273"></div><div class="dot" style="background:#d6c6b3"></div><div class="dot" style="background:#292821"></div></div>
+        <span class="card-link">Podgląd →</span>
+      </div>
+    </a>
+
+    <!-- 7 Slow wedding -->
+    <a class="card" href="demo/slow-wedding/index.html">
+      <div class="preview preview-slow">
+        <div class="mock-ui">
+          <div class="mock-nav"><div class="mock-logo"></div><div class="mock-nav-dots"><span></span><span></span><span></span></div></div>
+          <div class="mock-body"><div class="mock-h">Dwór<br>Wiśniowy</div><div class="mock-sub">Slow Wedding</div><div class="mock-btn">Zarezerwuj termin</div></div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-number">Styl 07</div>
+        <div class="card-title">Rustykalny / Slow Wedding</div>
+        <p class="card-desc">Naturalne tekstury, lokalna historia i świętowanie blisko przyrody — autentyczny klimat folwarku.</p>
+        <div class="card-palette"><div class="dot" style="background:#f5f0e5"></div><div class="dot" style="background:#788369"></div><div class="dot" style="background:#a9674d"></div><div class="dot" style="background:#765b43"></div></div>
+        <span class="card-link">Podgląd →</span>
+      </div>
+    </a>
+
+    <!-- 8 Evening glamour -->
+    <a class="card" href="demo/nocturne/index.html">
+      <div class="preview preview-nocturne">
+        <div class="mock-ui">
+          <div class="mock-nav"><div class="mock-logo" style="background:#c8a86d"></div><div class="mock-nav-dots" style="color:#c8a86d"><span></span><span></span><span></span></div></div>
+          <div class="mock-body"><div class="mock-h">Dwór<br>Wiśniowy</div><div class="mock-sub">Evening Glamour</div><div class="mock-btn">Zarezerwuj termin</div></div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-number">Styl 08</div>
+        <div class="card-title">Glamour / Dark Mode</div>
+        <p class="card-desc">Głęboka czerń, szampańskie złoto i pałacowy blask. Projekt na wielkie wieczorne przyjęcia.</p>
+        <div class="card-palette"><div class="dot" style="background:#111412"></div><div class="dot" style="background:#c8a86d"></div><div class="dot" style="background:#5b2635"></div><div class="dot" style="background:#f2eadc"></div></div>
+        <span class="card-link">Podgląd →</span>
+      </div>
+    </a>
+
+    <!-- 9 Industrial minimalism -->
+    <a class="card" href="demo/atelier/index.html">
+      <div class="preview preview-atelier">
+        <div class="mock-ui" style="z-index:3">
+          <div class="mock-nav"><div class="mock-logo" style="background:#212322"></div><div class="mock-nav-dots" style="color:#212322"><span></span><span></span><span></span></div></div>
+          <div class="mock-body"><div class="mock-h">Dwór<br>Wiśniowy</div><div class="mock-sub">Industrial Space</div><div class="mock-btn">Zarezerwuj termin</div></div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-number">Styl 09</div>
+        <div class="card-title">Minimalizm / Industrial</div>
+        <p class="card-desc">Architektura, beton i czysta forma. Modułowy układ dla loftów oraz nowoczesnych pawilonów.</p>
+        <div class="card-palette"><div class="dot" style="background:#f4f4f2"></div><div class="dot" style="background:#212322"></div><div class="dot" style="background:#ae4c36"></div><div class="dot" style="background:#858b89"></div></div>
+        <span class="card-link">Podgląd →</span>
+      </div>
+    </a>
+
+    <!-- 10 Romantic garden -->
+    <a class="card" href="demo/garden/index.html">
+      <div class="preview preview-garden">
+        <div class="mock-ui">
+          <div class="mock-nav"><div class="mock-logo"></div><div class="mock-nav-dots"><span></span><span></span><span></span></div></div>
+          <div class="mock-body"><div class="mock-h">Dwór<br>Wiśniowy</div><div class="mock-sub">Romantic Garden</div><div class="mock-btn">Zarezerwuj termin</div></div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-number">Styl 10</div>
+        <div class="card-title">Romantyczny / Ogrodowy</div>
+        <p class="card-desc">Pastelowe barwy, łukowe kadry i ogród pełen kwiatów. Lekka oprawa dla ślubów plenerowych.</p>
+        <div class="card-palette"><div class="dot" style="background:#fffaf7"></div><div class="dot" style="background:#bd8794"></div><div class="dot" style="background:#a9b69f"></div><div class="dot" style="background:#c7b9d7"></div></div>
         <span class="card-link">Podgląd →</span>
       </div>
     </a>

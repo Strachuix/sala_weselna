@@ -29,6 +29,52 @@
     });
   });
 
+  var galleryGrid = document.querySelector('.gallery-grid');
+  document.querySelectorAll('[data-gallery-mode]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      if (!galleryGrid) return;
+      galleryGrid.dataset.mode = button.dataset.galleryMode;
+      document.querySelectorAll('[data-gallery-mode]').forEach(function (item) {
+        item.setAttribute('aria-pressed', String(item === button));
+      });
+    });
+  });
+
+  var historyDetail = document.querySelector('[data-history-detail]');
+  document.querySelectorAll('[data-history-step]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      document.querySelectorAll('[data-history-step]').forEach(function (item) {
+        item.setAttribute('aria-pressed', String(item === button));
+      });
+      if (historyDetail) historyDetail.textContent = button.dataset.historyCopy;
+    });
+  });
+
+  document.querySelectorAll('[data-package-filter]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      var selectedPackage = button.dataset.packageFilter;
+      document.querySelectorAll('[data-package-filter]').forEach(function (item) {
+        item.setAttribute('aria-pressed', String(item === button));
+      });
+      document.querySelectorAll('[data-package-card]').forEach(function (card) {
+        card.hidden = selectedPackage !== 'all' && card.dataset.packageCard !== selectedPackage;
+      });
+    });
+  });
+
+  var zonePlan = document.querySelector('.theme-garden .floor-plan');
+  document.querySelectorAll('[data-garden-zone]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      if (!zonePlan) return;
+      zonePlan.dataset.zone = button.dataset.gardenZone;
+      zonePlan.querySelector('.floor-stage').textContent = button.dataset.stage;
+      zonePlan.querySelector('.floor-caption').textContent = button.dataset.caption;
+      document.querySelectorAll('[data-garden-zone]').forEach(function (item) {
+        item.setAttribute('aria-pressed', String(item === button));
+      });
+    });
+  });
+
   var floorPlan = document.querySelector('.floor-plan');
   var layoutStatus = document.querySelector('.layout-status');
   var layoutNames = { round: 'Sala Różana', long: 'Sala Lustrzana', ceremony: 'cała posiadłość' };
@@ -53,6 +99,28 @@
     { src: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1400&auto=format&fit=crop&q=85', alt: 'Widok przykładowej aranżacji stołów' }
   ];
   var tourSceneIndex = 0;
+  var lightbox = document.getElementById('editorial-lightbox');
+  var lightboxImage = lightbox && lightbox.querySelector('img');
+
+  document.querySelectorAll('.theme-editorial .gallery-card').forEach(function (card) {
+    var image = card.querySelector('img');
+    if (!image || !lightbox || !lightboxImage) return;
+    card.tabIndex = 0;
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-label', 'Powiększ zdjęcie: ' + image.alt);
+    function openLightbox() {
+      lightboxImage.src = image.src;
+      lightboxImage.alt = image.alt;
+      lightbox.showModal();
+    }
+    card.addEventListener('click', openLightbox);
+    card.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openLightbox();
+      }
+    });
+  });
 
   function showTourScene(index) {
     tourSceneIndex = (index + tourScenes.length) % tourScenes.length;
